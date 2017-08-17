@@ -1,5 +1,5 @@
 node("docker") {
-    docker.withRegistry('https://hub.docker.com', 'dockerhub-id') {
+    docker.withRegistry('https://hub.docker.com', 'docker-id') {
     
         git url: "git@github.com:corrieb/vic-test.git", credentialsId: 'github-id'
     
