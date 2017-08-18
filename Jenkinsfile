@@ -8,8 +8,9 @@ node("docker") {
         println commit_id
     
         stage "build"
-        dir "vch-test/dockerfile/ENV"
-        def app = docker.build("vch-test")
+        dir "vch-test/dockerfile/ENV" {
+           def app = docker.build("vch-test")
+        }
     
         stage "publish"
         app.push 'master'
