@@ -1,7 +1,7 @@
 node("docker") {
     
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-       sh 'docker login -u $USERNAME -p $PASSWORD'
+       sh "docker login -u $USERNAME -p $PASSWORD"
     }
 
     docker.withRegistry('https://registry.hub.docker.com', 'docker-id') {
