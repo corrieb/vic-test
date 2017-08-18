@@ -8,7 +8,7 @@ node("docker") {
         println commit_id
     
         stage "build"
-        dir("vch-test/dockerfile/ENV") {
+        dir("dockerfile/ENV") {
            def app = docker.build("vch-test")
         }
     
