@@ -1,4 +1,9 @@
 node("docker") {
+    
+    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+       sh 'docker login -u $USERNAME -p $PASSWORD'
+    }
+
     docker.withRegistry('https://registry.hub.docker.com', 'docker-id') {
     
         git url: "git@github.com:corrieb/vic-test.git", credentialsId: 'github-id'
@@ -13,7 +18,8 @@ node("docker") {
               app = docker.build("bensdoings/vch-test")
            }
         }
-    
+
+        sh "docker login 
         stage ("publish") {
            app.push 'master'
            app.push "${commit_id}"
