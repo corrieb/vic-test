@@ -6,14 +6,17 @@ node("docker") {
         sh "git rev-parse HEAD > .git/commit-id"
         def commit_id = readFile('.git/commit-id').trim()
         println commit_id
+        def app
     
-        stage "build"
-        dir("dockerfile/ENV") {
-           def app = docker.build("vch-test")
+        stage ("build") {
+           dir ("dockerfile/ENV") {
+              app = docker.build("bensdoings/vch-test")
+           }
         }
     
-        stage "publish"
-        app.push 'master'
-        app.push "${commit_id}"
+        stage ("publish") {
+           app.push 'master'
+           app.push "${commit_id}"
+        }
     }
 }
