@@ -1,5 +1,5 @@
 node("docker") {
-    docker.withRegistry('https://hub.docker.com', 'docker-id') {
+    docker.withRegistry('https://registry.hub.docker.com', 'docker-id') {
     
         git url: "git@github.com:corrieb/vic-test.git", credentialsId: 'github-id'
     
@@ -8,7 +8,7 @@ node("docker") {
         println commit_id
     
         stage "build"
-        def app = docker.build "vch-test"
+        def app = docker.build "vch-test/dockerfile/ENV"
     
         stage "publish"
         app.push 'master'
