@@ -1,7 +1,7 @@
 node("docker") {
 
     withCredentials([usernamePassword(credentialsId: 'docker-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')])
-       sh 'echo $USERNAME'
+       sh 'docker login -u $USERNAME -p $PASSWORD'
     }
 
     docker.withRegistry('https://registry.hub.docker.com', 'docker-id') {
@@ -19,7 +19,6 @@ node("docker") {
            }
         }
 
-        sh "docker login 
         stage ("publish") {
            app.push 'master'
            app.push "${commit_id}"
