@@ -4,8 +4,6 @@ node("docker") {
        sh 'docker login -u $USERNAME -p $PASSWORD'
     }
 
-    docker.withRegistry('https://registry.hub.docker.com', 'docker-id') {
-    
         git url: "git@github.com:corrieb/vic-test.git", credentialsId: 'github-id'
     
         sh "git rev-parse HEAD > .git/commit-id"
@@ -23,5 +21,4 @@ node("docker") {
            app.push 'master'
            app.push "${commit_id}"
         }
-    }
 }
