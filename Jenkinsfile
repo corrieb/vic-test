@@ -1,9 +1,5 @@
 node("docker") {
 
-    withCredentials([usernamePassword(credentialsId: 'docker-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-       sh 'docker login -u $USERNAME -p $PASSWORD'
-    }
-
         git url: "git@github.com:corrieb/vic-test.git", credentialsId: 'github-id'
     
         sh "git rev-parse HEAD > .git/commit-id"
@@ -18,6 +14,10 @@ node("docker") {
         }
 
         stage ("publish") {
+           withCredentials([usernamePassword(credentialsId: 'docker-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+              sh 'docker login -u $USERNAME -p $PASSWORD'
+           }
+
            app.push 'master'
            app.push "${commit_id}"
         }
