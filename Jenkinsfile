@@ -23,10 +23,11 @@ node("docker") {
         }
         
         stage('test') {
-           dir ("dockerfile/ENV") {
-              def test_vch = ${env["TEST_VCH"]}
-              println test_vch
-              sh 'docker -H ${test_vch} run bensdoings/vch-test:master'
+           withEnv(["DOCKER_HOST=${env["TEST_VCH"]}"]) {
+              dir ("dockerfile/ENV") {
+                 sh 'export'
+                 sh 'docker run bensdoings/vch-test:master'
+              }
            }
         }
 }
