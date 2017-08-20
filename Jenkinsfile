@@ -23,6 +23,6 @@ node("docker") {
         }
         
         stage('test') {
-           sh "docker -H ${env["TEST_VCH"]} run bensdoings/vch-test:${commit_id}
+           sh "docker -H ${env["TEST_VCH"]} run bensdoings/vch-test:${commit_id}"
         }
 }
