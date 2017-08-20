@@ -9,4 +9,4 @@ ENV myCat2 fluffy
 COPY runtest.sh /
 RUN chmod +x /runtest.sh
 
-CMD ["/runtest.sh"]
+CMD /runtest.sh
