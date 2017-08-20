@@ -4,6 +4,7 @@ node("docker") {
     
         sh "git rev-parse HEAD > .git/commit-id"
         def commit_id = readFile('.git/commit-id').trim()
+        def foo = env["VCH_TEST"]
         println commit_id
         def app
     
@@ -23,7 +24,6 @@ node("docker") {
         }
         
         stage('test') {
-           def foo = "${env["VCH_TEST"]}"
            sh "echo ${foo}"
         }
 }
