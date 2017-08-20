@@ -27,6 +27,8 @@ node("docker") {
               sh "docker -H ${env["TEST_VCH"]} run --rm bensdoings/vch-test:${commit_id}"
            }
         } finally {
-           sh "docker -H ${env["TEST_VCH"]} rmi bensdoings/vch-test:${commit_id}"
+           stage ("cleanup") {
+              sh "docker -H ${env["TEST_VCH"]} rmi bensdoings/vch-test:${commit_id}"
+           }
         }                
 }
