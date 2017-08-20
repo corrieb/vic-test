@@ -22,11 +22,11 @@ node("docker") {
            app.push "${commit_id}"
         }
         
-        stage('test') {
+        stage ("test") {
            sh "docker -H ${env["TEST_VCH"]} run --rm bensdoings/vch-test:${commit_id}"
         }
         
-        stage('cleanup') {
+        post ("cleanup") {
            sh "docker -H ${env["TEST_VCH"]} rmi bensdoings/vch-test:${commit_id}"
         }                
 }
