@@ -23,6 +23,6 @@ node("docker") {
         }
         
         stage('test') {
-           sh "echo ${env["VCH_TEST"}"
+           sh "echo ${env["VCH_TEST"]}"
         }
 }
