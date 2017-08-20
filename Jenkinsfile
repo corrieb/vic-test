@@ -23,8 +23,6 @@ node("docker") {
         }
         
         stage('test') {
-           dir ("dockerfile/ENV") {
-              sh 'echo "${env["TEST_VCH"]}"'
-           }
+           sh 'set -x; echo ${env["TEST_VCH"]}'
         }
 }
