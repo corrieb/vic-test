@@ -23,6 +23,9 @@ node("docker") {
         }
         
         try {
+           stage ("pull") {
+              sh "docker -H ${env["TEST_VCH"]} pull bensdoings/vch-test:${commit_id}"
+           }
            stage ("test") {
               sh "docker -H ${env["TEST_VCH"]} run --rm bensdoings/vch-test:${commit_id}"
            }
