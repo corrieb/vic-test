@@ -24,7 +24,7 @@ node("docker") {
         
         stage('test') {
            dir ("dockerfile/ENV") {
-              sh 'docker run bensdoings/vch-test:master'
+              sh 'docker -H ${env.TEST_VCH} run bensdoings/vch-test:master'
            }
         }
 }
