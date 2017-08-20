@@ -24,6 +24,6 @@ node("docker") {
         
         stage('test') {
            def foo = "bar"
-           sh 'echo ${foo}'
+           sh "echo ${foo}"
         }
 }
