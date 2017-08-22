@@ -1,7 +1,7 @@
 def createBuildAndPush(dockerfile_dir, image_name, commit_id) {
   return {
     stage("Build and push image ${image_name}") { 
-      node {
+      node("docker") {
          def app
          dir ("${dockerfile_dir}") {
             app = docker.build("${image_name}")
