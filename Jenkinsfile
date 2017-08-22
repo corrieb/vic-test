@@ -6,8 +6,8 @@ node("docker") {
         def commit_id = readFile('.git/commit-id').trim()
         println commit_id
         def app
-        def test_vch = ${env["TEST_VCH"]}
-        def registry_id = ${env["REGISTRY_ID"]}
+        def test_vch = "${env["TEST_VCH"]}"
+        def registry_id = "${env["REGISTRY_ID"]}"
         def env_image_name = "${registry_id}/vch-test"
     
         stage ("build") {
