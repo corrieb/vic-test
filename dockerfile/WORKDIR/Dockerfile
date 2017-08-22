@@ -3,7 +3,7 @@ FROM debian
 RUN mkdir /foo
 
 COPY runtest.sh /foo
-RUN chmod +x /runtest.sh
+RUN chmod +x /foo/runtest.sh
 
 WORKDIR /foo
 
