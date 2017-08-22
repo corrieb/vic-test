@@ -1,9 +1,9 @@
 #!/bin/bash
-if [[ $(pwd) == "/foo" ]]; then 
+if [[ $(pwd) == "/foo" ]]; then
    echo "PASSED"
    exit 0
 else
-   echo "FAILED: pwd="
-   $(pwd)
+   echo "FAILED"
+   echo "WORKDIR="$(pwd)
    exit 1
 fi
