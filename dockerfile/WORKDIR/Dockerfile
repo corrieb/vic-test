@@ -2,6 +2,9 @@ FROM debian
 
 RUN mkdir /foo
 
-COPY runTest.sh /foo
+COPY runtest.sh /foo
+RUN chmod +x /runtest.sh
 
 WORKDIR /foo
+
+CMD runtest.sh 
