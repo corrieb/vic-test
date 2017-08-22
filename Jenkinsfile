@@ -1,3 +1,26 @@
+def createBuildAndPush(dockerfile_dir, image_name, commit_id) {
+  return {
+    stage("Build and push image ${image_name}") { 
+      node {
+         def app
+         dir ("${dockerfile_dir}") {
+            app = docker.build("${image_name}")
+         }
+         app.push "${commit_id}"
+         app.push 'master'
+      }
+    }
+  }
+}
+
+// Required due to JENKINS-27421
+@NonCPS
+List<List<?>> mapToList(Map map) {
+  return map.collect { it ->
+    [it.key, it.value]
+  }
+}
+
 node("docker") {
 
         git url: "git@github.com:corrieb/vic-test.git", credentialsId: 'github-id'
@@ -7,30 +30,25 @@ node("docker") {
         println commit_id
         def env_app
         def workdir_app
+
         def test_vch = "${env["TEST_VCH"]}"
         def registry_id = "${env["REGISTRY_ID"]}"
-        def env_image_name = "${registry_id}/df-env-test"
-        def workdir_image_name = "${registry_id}/df-workdir-test"
-    
-        stage ("build") {
-           dir ("dockerfile/ENV") {
-              env_app = docker.build("${env_image_name}")
-           }
-           dir ("dockerfile/WORKDIR") {
-              workdir_app = docker.build("${workdir_image_name}")
-           }
+
+        def images = [
+           "dockerfile/ENV": "${registry_id}/df-env-test",
+           "dockerfile/WORKDIR": "${registry_id}/df-workdir-test",
+        ]
+        
+        work = [:]
+        for (kv in mapToList(images)) {
+            work[kv[0]] = createBuildAndPush(kv[0], kv[1], "${commit_id}")
+        }
+ 
+        withCredentials([usernamePassword(credentialsId: 'docker-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+           sh 'docker login -u $USERNAME -p $PASSWORD'
         }
 
-        stage ("publish") {
-           withCredentials([usernamePassword(credentialsId: 'docker-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-              sh 'docker login -u $USERNAME -p $PASSWORD'
-           }
-
-           env_app.push 'master'
-           env_app.push "${commit_id}"
-           workdir_app.push 'master'
-           workdir_app.push "${commit_id}"
-        }
+        parallel work
         
         try {
            stage ("pull") {
