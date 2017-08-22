@@ -6,10 +6,13 @@ node("docker") {
         def commit_id = readFile('.git/commit-id').trim()
         println commit_id
         def app
+        def test_vch = ${env["TEST_VCH"]}
+        def registry_id = ${env["REGISTRY_ID"]}
+        def env_image_name = "${registry_id}/vch-test"
     
         stage ("build") {
            dir ("dockerfile/ENV") {
-              app = docker.build("bensdoings/vch-test")
+              app = docker.build("${env_image_name}")
            }
         }
 
@@ -24,14 +27,14 @@ node("docker") {
         
         try {
            stage ("pull") {
-              sh "docker -H ${env["TEST_VCH"]} pull bensdoings/vch-test:${commit_id}"
+                   sh "docker -H ${test_vch} pull ${env_image_name}:${commit_id}"
            }
            stage ("test") {
-              sh "docker -H ${env["TEST_VCH"]} run --rm bensdoings/vch-test:${commit_id}"
+                   sh "docker -H ${test_vch} run --rm ${env_image_name}:${commit_id}"
            }
         } finally {
            stage ("cleanup") {
-              sh "docker -H ${env["TEST_VCH"]} rmi bensdoings/vch-test:${commit_id}"
+              sh "docker -H ${test_vch} rmi ${env_image_name}:${commit_id}"
            }
         }                
 }
