@@ -7,4 +7,4 @@ RUN chmod +x /foo/runtest.sh
 
 WORKDIR /foo
 
-CMD runtest.sh 
+CMD ./runtest.sh 
