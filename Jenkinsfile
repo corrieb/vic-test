@@ -27,10 +27,10 @@ node("docker") {
         
         try {
            stage ("pull") {
-                   sh "docker -H ${test_vch} pull ${env_image_name}:${commit_id}"
+              sh "docker -H ${test_vch} pull ${env_image_name}:${commit_id}"
            }
            stage ("test") {
-                   sh "docker -H ${test_vch} run --rm ${env_image_name}:${commit_id}"
+              sh "docker -H ${test_vch} run --rm ${env_image_name}:${commit_id}"
            }
         } finally {
            stage ("cleanup") {
